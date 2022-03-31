@@ -49,19 +49,11 @@ const Form = ({currentId, setCurrentId}) => {
         position: toast.POSITION.TOP_CENTER
       });
     }
-   
-    setCurrentId(null)
-      setPostData({
-      creator: '',
-      title: '',
-      description: '',
-      tags: '',
-      selectedFiles: ''
-      })
+    clear()
   }
 
 
-  // reset form
+  // reset form data
   const clear = () => {
     setCurrentId(null)
       setPostData({

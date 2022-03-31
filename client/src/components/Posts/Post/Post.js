@@ -1,15 +1,29 @@
-import React from 'react'
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core/';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@material-ui/core/';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import moment from 'moment'
-import useStyles from './style.js'
-
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import moment from 'moment';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { deletePost } from '../../../actions/posts.js';
+import useStyles from './style.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Post = ({post, setCurrentId}) => {
   const classes = useStyles()
-  
+  const dispatch = useDispatch()
+
+  const notify = () => toast('Post Delete Successfully!', {
+  position: "top-left",
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  });
+
   return (
     <Card className={classes.card} >
       <CardMedia className= {classes.media} image={post.selectedFile} />
@@ -42,7 +56,7 @@ const Post = ({post, setCurrentId}) => {
           Like
           {post.likeCount}
         </Button>
-        <Button size="small" color="primary" onClick={()=>{}} >
+        <Button size="small" color="primary" onClick={()=> (dispatch(deletePost(post._id)), notify())} >
           <DeleteIcon fontSize='small' />
           Delete
         </Button>

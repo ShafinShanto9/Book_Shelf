@@ -34,7 +34,22 @@ export const updatePost = async (req, res) => {
     // Checking Id Valid or not 
     if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send("Invalid Post Id");
 
-    const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, { new: true })
+    const updatedPost = await PostMessage.findByIdAndUpdate(_id, {...post, _id}, { new: true })
     
     res.json(updatedPost)
+}
+
+// Delete Post
+
+export const deletePost = async (req, res) => {
+
+    const {id} = req.params
+
+    // Checking Id Valid or not 
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Post Id");
+
+    await PostMessage.findByIdAndRemove(id)
+
+    res.json({message: "Post Deleted Successfully"})
+
 }
