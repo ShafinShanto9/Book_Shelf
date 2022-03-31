@@ -1,13 +1,17 @@
 import { Button, Paper, TextField, Typography } from "@material-ui/core"
 import React, { useState } from 'react'
+import { useEffect } from "react"
 import FileBased from 'react-file-base64'
-import { useDispatch } from "react-redux"
-import { createPost } from "../../actions/posts.js"
+import { useDispatch, useSelector } from "react-redux"
+import { createPost,updatePost } from "../../actions/posts.js"
 import useStyles from './style.js'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
-const Form = () => {
+const Form = ({currentId, setCurrentId}) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
   const [postData, setPostData] = useState({
     creator: '',
@@ -17,24 +21,62 @@ const Form = () => {
     selectedFiles: ''
   })
 
-  const dispatch = useDispatch()
+  const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId) : null); //Fetching Data
+  
+  useEffect(() => {
+    if (post) {
+      setPostData(post)
+    }   
+  },[post])
 
+
+  
   // Handle Form Data Submission
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    if (currentId) {
+      dispatch(updatePost(currentId, postData))
 
-    dispatch(createPost(postData))
+      toast.success("Update SuccessFully 😊", {
+        position: toast.POSITION.TOP_CENTER
+      });
+      
+    } else {
+      dispatch(createPost(postData))
+
+      toast.success("Post CreatedSuccessFully 😊", {
+        position: toast.POSITION.TOP_CENTER
+      });
+    }
+   
+    setCurrentId(null)
+      setPostData({
+      creator: '',
+      title: '',
+      description: '',
+      tags: '',
+      selectedFiles: ''
+      })
   }
+
+
   // reset form
-
   const clear = () => {
-
+    setCurrentId(null)
+      setPostData({
+      creator: '',
+      title: '',
+      description: '',
+      tags: '',
+      selectedFiles: ''
+      })
   }
   
   return (
     <Paper className={classes.paper} >
       <form className={`${classes.root} ${classes.form}`} autoComplete='of' noValidate onSubmit={handleSubmit}>
-        <Typography variant='h6'>Publish Your Books <br /> Digital Copy 📢 </Typography>
+        <Typography variant='h6'>{currentId ? "Editing" : "Publishing"} Your Books <br /> Digital Reference 📢 </Typography>
         
         <TextField name='creator' variant='outlined' label='Author' fullWidth value={postData.creator} onChange={(e) => setPostData({ ...postData, creator:e.target.value})}
         />
@@ -57,6 +99,8 @@ const Form = () => {
         <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
 
       </form>
+
+      <ToastContainer/>
     </Paper>
   )
 }

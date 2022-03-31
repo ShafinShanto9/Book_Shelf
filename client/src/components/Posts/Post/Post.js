@@ -6,8 +6,10 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment'
 import useStyles from './style.js'
 
-const Post = ({post}) => {
-    const classes = useStyles()
+
+const Post = ({post, setCurrentId}) => {
+  const classes = useStyles()
+  
   return (
     <Card className={classes.card} >
       <CardMedia className= {classes.media} image={post.selectedFile} />
@@ -16,7 +18,7 @@ const Post = ({post}) => {
         <Typography variant="body2" > {moment(post.createdAt).fromNow()} </Typography>
       </div>
       <div className={classes.overlay2} >
-        <Button style={{ color: 'white' }} size="small" onClick={() => { }} >
+        <Button style={{ color: 'white' }} size="small" onClick={() =>setCurrentId(post._id)} >
           <MoreHorizIcon fontSize='medium' />
         </Button>
       </div>
@@ -24,9 +26,15 @@ const Post = ({post}) => {
           <Typography variant="body2" color="textSecondary" > {post.tags.map((tag)=> `#${tag} ` )} </Typography>
       </div>
       <CardContent>
+
         <Typography className={classes.title} variant="subtitle1" gutterBottom >
+          {(post.title)}
+        </Typography>
+
+        <Typography className={classes.desc} variant="subtitle1" gutterBottom >
           {(post.description).slice(0,80)}
-      </Typography>
+        </Typography>
+        
       </CardContent>
       <CardActions className={classes.cardActions}>
         <Button size="small" color="primary" onClick={()=>{}} >
