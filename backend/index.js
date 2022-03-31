@@ -1,30 +1,28 @@
-import bodyParser from 'body-parser';
-import cors from 'cors';
 import express from 'express';
+import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import postRoutes from './routes/posts.js'
+import cors from 'cors';
 
-const app = express()
+import postRoutes from './routes/posts.js';
 
+const app = express();
 
-app.use(bodyParser.json({imit:"30mb", extended: true}))
-app.use(bodyParser.urlencoded({ imit: "30mb", extended: true }))
-app.use(cors())
+app.use(bodyParser.json({ limit: '30mb', extended: true }))
+app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
+app.use(cors());
 
-// Routes
-app.use('/posts', postRoutes)
-
-
-// MongoDB Connenctions
-const CONNECTION_URL = "mongodb+srv://shanto:shanto123456@cluster0.8oki3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-
-const port = process.env.PORT || 5000; 
-
-mongoose.connect(CONNECTION_URL, () => {
-    console.log("database connnected")
-})
+app.use('/posts', postRoutes);
 
 
+// MongoDB Connenctions url
+const CONNECTION_URL = "mongodb+srv://shanto:shanto123456@cluster0.8oki3.mongodb.net/bookShelf?retryWrites=true&w=majority"
+const PORT = process.env.PORT || 5000;
 
-app.listen(port,  ()=> console.log(`server running on ${port}`)) 
+// Mongodb Connection
+mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`)))
+  .catch((error) => console.log(`${error} did not connect`));
+
+
+
 

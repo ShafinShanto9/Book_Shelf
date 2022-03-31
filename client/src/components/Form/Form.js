@@ -1,11 +1,13 @@
 import { Button, Paper, TextField, Typography } from "@material-ui/core"
 import React, { useState } from 'react'
 import FileBased from 'react-file-base64'
+import { useDispatch } from "react-redux"
+import { createPost } from "../../actions/posts.js"
 import useStyles from './style.js'
 
 
 const Form = () => {
-  const clasess = useStyles()
+  const classes = useStyles()
 
   const [postData, setPostData] = useState({
     creator: '',
@@ -15,11 +17,13 @@ const Form = () => {
     selectedFiles: ''
   })
 
-  console.log(postData)
+  const dispatch = useDispatch()
 
   // Handle Form Data Submission
-  const handleSubmit = () => {
-    
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(createPost(postData))
   }
   // reset form
 
@@ -28,9 +32,9 @@ const Form = () => {
   }
   
   return (
-    <Paper className={clasess.paper} >
-      <form className={clasess.form} autoComplete='of' noValidate onSubmit={handleSubmit}>
-        <Typography variant='h6'>Publish You Books <br /> Digital Copy 📢 </Typography>
+    <Paper className={classes.paper} >
+      <form className={`${classes.root} ${classes.form}`} autoComplete='of' noValidate onSubmit={handleSubmit}>
+        <Typography variant='h6'>Publish Your Books <br /> Digital Copy 📢 </Typography>
         
         <TextField name='creator' variant='outlined' label='Author' fullWidth value={postData.creator} onChange={(e) => setPostData({ ...postData, creator:e.target.value})}
         />
@@ -41,15 +45,15 @@ const Form = () => {
         <TextField name='tags' variant='outlined' label='Tags' fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags:e.target.value})}
         />
 
-        <div className={clasess.fileInput}>
+        <div className={classes.fileInput}>
           <FileBased
             type='file'
             multiple={false}
-            onDone={({base64})=> setPostData({...postData, selectedFiles: base64}) }
+            onDone={({base64})=> setPostData({...postData, selectedFile: base64}) }
           />
         </div>
 
-        <Button className={clasess.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
+        <Button className={classes.buttonSubmit} variant="contained"  size="large" type="submit" fullWidth>Submit</Button>
         <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
 
       </form>
