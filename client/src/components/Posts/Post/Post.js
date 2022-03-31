@@ -5,10 +5,10 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import moment from 'moment';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { deletePost } from '../../../actions/posts.js';
-import useStyles from './style.js';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { deletePost, likePost } from '../../../actions/posts.js';
+import useStyles from './style.js';
 
 const Post = ({post, setCurrentId}) => {
   const classes = useStyles()
@@ -51,7 +51,7 @@ const Post = ({post, setCurrentId}) => {
         
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary" onClick={()=>{}} >
+        <Button size="small" color="primary" onClick={() => dispatch(likePost(post._id))} >
           <ThumbUpAltIcon fontSize='small' />
           Like
           {post.likeCount}
