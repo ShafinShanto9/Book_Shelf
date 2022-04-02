@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import 'dotenv/config'
 
 import postRoutes from './routes/posts.js';
 
@@ -15,7 +16,7 @@ app.use('/posts', postRoutes);
 
 
 // MongoDB Connenctions url
-const CONNECTION_URL = "mongodb+srv://shanto:shanto123456@cluster0.8oki3.mongodb.net/bookShelf?retryWrites=true&w=majority"
+const CONNECTION_URL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.8oki3.mongodb.net/bookShelf?retryWrites=true&w=majority`
 const PORT = process.env.PORT || 5000;
 
 // Mongodb Connection
