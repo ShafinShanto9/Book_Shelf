@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import 'dotenv/config'
+import {} from 'dotenv/config'
 
 import postRoutes from './routes/posts.js';
 import userRoutes from './routes/users.js';
